@@ -1,19 +1,27 @@
-export const createCard = (message, key) => {
+export const Card = (message, btn, key) => {
   const outer_ = document.createElement("div");
   const inner_ = document.createElement("div");
   const content = document.createElement("p");
-  const btn = document.createElement("button");
+  const button = btn("del");
+
   content.textContent = message;
-  btn.textContent = "del";
-  btn.dataset.key = key;
+  button.dataset.key = key;
 
   outer_.setAttribute("class", "outer-c");
   inner_.setAttribute("class", "inner-c");
-  btn.setAttribute("class", "btn");
 
   inner_.appendChild(content);
-  inner_.appendChild(btn);
+  inner_.appendChild(button);
   outer_.appendChild(inner_);
 
   return outer_;
+};
+
+export const Button = (text) => {
+  const btn = document.createElement("button");
+  btn.textContent = text;
+
+  btn.setAttribute("class", "btn");
+
+  return btn;
 };

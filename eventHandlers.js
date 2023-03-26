@@ -1,4 +1,5 @@
 import { get, set, del, clear, keys, values } from "./controller.js";
+import { Button } from "./components.js";
 
 export const submitForm = (root, nameForm) => {
   nameForm.addEventListener("submit", (event) => {
@@ -11,25 +12,34 @@ export const submitForm = (root, nameForm) => {
   });
 };
 
-export const loadMessages = (root, createCard) => {
+export const loadMessages = (root, Card) => {
   window.addEventListener("load", async () => {
     const messages = await values();
     const allKeys = await keys();
 
-    messages.forEach((message, index) => {
-      const html = createCard(message, allKeys[index]);
-      root.appendChild(html);
-    });
+    if (messages.length) {
+      messages.forEach((message, index) => {
+        const html = Card(message, Button, allKeys[index]);
+        root.appendChild(html);
+      });
 
-    const buttons = [...document.querySelectorAll(".btn")];
+      const buttonGroup = [...document.querySelectorAll(".btn")];
+      buttonGroup.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const key = e.target.dataset.key;
+          del(key);
+          window.location.reload();
+        });
+      });
 
-    buttons.forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const key = e.target.dataset.key;
-        del(key);
+      const Clear = Button("clear all");
+      Clear.setAttribute("id", "clear-btn");
+      root.appendChild(Clear);
+      Clear.addEventListener("click", () => {
+        clear();
         window.location.reload();
       });
-    });
+    }
 
     const inputField = document.getElementById("inputField");
     inputField.focus();
