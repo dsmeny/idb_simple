@@ -1,5 +1,5 @@
 import { get, set, del, clear, keys, values } from "./controller.js";
-import { Button } from "./components.js";
+import { Button, Content } from "./components.js";
 
 export const submitForm = (root, nameForm) => {
   nameForm.addEventListener("submit", (event) => {
@@ -18,18 +18,11 @@ export const loadMessages = (root, Card) => {
     const allKeys = await keys();
 
     if (messages.length) {
+      const ContentContainer = Content();
+
       messages.forEach((message, index) => {
         const html = Card(message, Button, allKeys[index]);
-        root.appendChild(html);
-      });
-
-      const buttonGroup = [...document.querySelectorAll(".btn")];
-      buttonGroup.forEach((btn) => {
-        btn.addEventListener("click", (e) => {
-          const key = e.target.dataset.key;
-          del(key);
-          window.location.reload();
-        });
+        ContentContainer.appendChild(html);
       });
 
       const Clear = Button("clear all");
@@ -38,6 +31,16 @@ export const loadMessages = (root, Card) => {
       Clear.addEventListener("click", () => {
         clear();
         window.location.reload();
+      });
+      root.appendChild(ContentContainer);
+
+      const cards = [...document.querySelectorAll(".inner-c")];
+      cards.forEach((card) => {
+        card.addEventListener("click", (e) => {
+          const key = e.target.dataset.key;
+          del(key);
+          window.location.reload();
+        });
       });
     }
 

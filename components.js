@@ -21,7 +21,13 @@ export const Button = (text) => {
   const btn = document.createElement("button");
   btn.textContent = text;
 
-  btn.setAttribute("class", "btn");
+  btn.setAttribute("class", "btn card-btn");
 
   return btn;
+};
+
+export const Content = () => {
+  const content = document.createElement("div");
+  content.setAttribute("class", "content");
+  return content;
 };
